@@ -1,0 +1,8 @@
+#game-view {
+  position: relative;
+}
+
+#state-name-while-hovering {
+  display: none;
+  position: absolute;
+}
