@@ -46,12 +46,7 @@ stateMap.onload = function () {
 
       stateHTML.addEventListener("click", function () {
         if (this.id == startState.id) {
-          this.setAttribute("fill", stateColod_found);
-
-          removeValue(startState, country.states);
-
-          startState = getRandomStateFrom(country.states);
-          stateNamePrompt.innerText = startState.name;
+          foundCorrectState(this, startState);
         }
       });
     });
@@ -71,6 +66,24 @@ setTimeout(function () {
   startState = getRandomStateFrom(possibleStartStates);
   stateNamePrompt.innerText = startState.name;
 }, 100);
+
+function foundCorrectState(stateHTML, state) {
+  stateHTML.setAttribute("fill", stateColod_found);
+
+  removeValue(state, possibleStartStates);
+
+  if (possibleStartStates.length > 0) {
+    startState = getRandomStateFrom(possibleStartStates);
+    stateNamePrompt.innerText = startState.name;
+  } else {
+    allStatesFound();
+  }
+}
+
+function allStatesFound() {
+  stateNamePrompt.innerText = "all states found";
+  window.location.reload();
+}
 
 function getRandomStateFrom(states) {
   return states[rng(states.length)];
