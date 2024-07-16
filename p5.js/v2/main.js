@@ -1,4 +1,5 @@
 //REFERENCES
+const body = document.getElementById('body');
 const stateMap = document.getElementById('state-map');
 const stateNameWhileHovering = document.getElementById('state-name-while-hovering');
 const stateNamePrompt = document.getElementById('state-name-prompt');
@@ -19,8 +20,12 @@ const stateColod_found = '#173669';
 
 //CONSTANTS
 const TRIES_STORAGE = 'tries';
-//VARIABLES
+
+//SESSION STORAGE
 let TRIES_STORAGE_currentMap;
+let currentMapUrl = sessionStorage.getItem('currentMapUrl') ?? '../res/germany.svg';
+
+//VARIABLES
 let country = new Country();
 let state;
 let possibleStartStates = [];
@@ -31,6 +36,10 @@ let promptState;
 
 let triesTillFoundCorrectState = {};
 let tryCounter;
+
+body.onload = function () {
+  stateMap.setAttribute('data', currentMapUrl);
+};
 
 stateMap.onload = function () {
   const svgDocument = stateMap.contentDocument;
@@ -151,7 +160,7 @@ function resetScore() {
 }
 
 function selectMap(kind) {
-  let currentMapUrl = `../res/${kind}.svg`;
+  currentMapUrl = `../res/${kind}.svg`;
   stateMap.setAttribute('data', currentMapUrl);
   sessionStorage.setItem('currentMapUrl', currentMapUrl);
 }
