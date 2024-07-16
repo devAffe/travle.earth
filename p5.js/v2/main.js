@@ -39,6 +39,8 @@ stateMap.onload = function () {
     currentMapId = svgDocument.firstElementChild.id;
     TRIES_STORAGE_currentMap = `${TRIES_STORAGE}_${currentMapId}`;
 
+    country.states = [];
+
     statesSVG.forEach((stateHTML) => {
       state = new State(stateHTML);
 
@@ -88,14 +90,11 @@ stateMap.onload = function () {
   } else {
     console.log('no svgDocument'); //---------------------------------------------------
   }
-};
 
-setTimeout(function () {
   possibleStartStates = [...country.states];
   possibleGoalStates = [...country.states];
-
   setNewPromptState();
-}, 1000);
+};
 
 //FUNCTIONS
 function addTryCounterToStorage(promptState, tryCounter) {
@@ -150,4 +149,10 @@ function getRandomStateFrom(states) {
 function resetScore() {
   sessionStorage.clear();
   window.location.reload();
+}
+
+function selectMap(kind) {
+  let currentMapUrl = `../res/${kind}.svg`;
+  stateMap.setAttribute('data', currentMapUrl);
+  sessionStorage.setItem('currentMapUrl', currentMapUrl);
 }
