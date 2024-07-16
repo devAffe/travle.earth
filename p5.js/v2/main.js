@@ -61,7 +61,6 @@ stateMap.onload = function () {
       else if (averageTries <= 3) appliedStateColor = stateColor_t3;
       else if (averageTries > 3) appliedStateColor = stateColor_t4;
 
-      // let appliedStateColor = stateColor_t3;
       stateHTML.setAttribute('fill', appliedStateColor);
 
       // stateHTML.addEventListener("mouseover", function () {
