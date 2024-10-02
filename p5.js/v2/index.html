@@ -6,6 +6,7 @@
   <title>Sketch2</title>
 
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="reset.css">
 
   <script src="country.js"></script>
   <script src="state.js"></script>
@@ -17,24 +18,33 @@
   
   <button onclick="resetScore()">Reset All Scores</button>
 
-  <button onclick="selectMap('leipzig')" id="select-map-leipzig" class="btn">Leipzig</button>
-  <button onclick="selectMap('germany')" id="select-map-germany" class="btn">Deutschland</button>
+  <ul class="maps">
+    <button id="select-map-leipzig" class="btn" onclick="selectMap('leipzig')">Leipzig</button>
+    <button id="select-map-germany" class="btn" onclick="selectMap('germany')">Deutschland</button>
+  </ul>
+
+  <ul class="game-modes">
+    <button id="change-game-mode_find-the-state" class="btn" onclick="loadGameMode(GameMode.FIND_THE_STATE)">Find The State</button>
+    <button id="change-game-mode_form-a-to-b" class="btn" onclick="loadGameMode(GameMode.FROM_A_TO_B)">From A to B</button>
+  </ul>
 
   <div id="game-view">
     
-    <div>
+    <div id="state-name-prompt" class="text-field">
+      Where is ...?
+    </div>
+
+    <div id="map-view">
       <object id="state-map" class="svg-object" data="../res/germany.svg" type="image/svg+xml"></object>
     </div>
     
     <div id="state-name-while-hovering" class="text-field">
       Statename
     </div>
-
-    <div id="state-name-prompt" class="text-field">
-      Where is ...?
-    </div>
-    
+  
+    <input id="guess-input-field" class="text-field" placeholder="Enter Guess"></input>
   </div>
+
 
 </body>
 </html>
