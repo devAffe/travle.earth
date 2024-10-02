@@ -3,6 +3,7 @@ const body = document.getElementById('body');
 const stateMap = document.getElementById('state-map');
 const stateNameWhileHovering = document.getElementById('state-name-while-hovering');
 const stateNamePrompt = document.getElementById('state-name-prompt');
+const guessInput = document.getElementById('guess-input-field');
 let currentMapId;
 
 //COLORS
@@ -20,10 +21,15 @@ const stateColod_found = '#173669';
 
 //CONSTANTS
 const TRIES_STORAGE = 'tries';
+const GameMode = Object.freeze({
+  FIND_THE_STATE: 'findTheState',
+  FROM_A_TO_B: 'fromAToB',
+});
 
 //SESSION STORAGE
 let TRIES_STORAGE_currentMap;
 let currentMapUrl = sessionStorage.getItem('currentMapUrl') ?? '../res/germany.svg';
+let currentGameMode = sessionStorage.getItem('currentGameMode') ?? GameMode.FIND_THE_STATE;
 
 //VARIABLES
 let country = new Country();
@@ -39,6 +45,22 @@ let tryCounter;
 
 body.onload = function () {
   stateMap.setAttribute('data', currentMapUrl);
+  currentGameMode = sessionStorage.getItem('currentGameMode');
+  console.log(currentGameMode);
+
+  switch (currentGameMode) {
+    case GameMode.FIND_THE_STATE:
+      //find the state
+      console.log('switch find the');
+      break;
+    case GameMode.FROM_A_TO_B:
+      //from a to b
+      console.log('switch a to b');
+      console.log(guessInput);
+      guessInput.style.display = 'block';
+
+      break;
+  }
 };
 
 stateMap.onload = function () {
@@ -46,7 +68,7 @@ stateMap.onload = function () {
   if (svgDocument) {
     statesSVG = svgDocument.querySelectorAll('.sm_state');
     currentMapId = svgDocument.firstElementChild.id;
-    TRIES_STORAGE_currentMap = `${TRIES_STORAGE}_${currentMapId}`;
+    TRIES_STORAGE_currentMap = `${TRIES_STORAGE}_${currentMapId}`; //findthestate
 
     country.states = [];
 
@@ -59,18 +81,26 @@ stateMap.onload = function () {
       country.addState(state);
 
       //SETUP EACH STATE
-      let triesForCurrentState = JSON.parse(sessionStorage.getItem(TRIES_STORAGE_currentMap) ?? '{}')[state.id] ?? [0];
+      let triesForCurrentState;
+      // console.log('1', triesForCurrentState);
+      switch (currentGameMode) {
+        case GameMode.FIND_THE_STATE:
+          console.log('gm find the');
+          // console.log('2', triesForCurrentState);
+          triesForCurrentState = JSON.parse(sessionStorage.getItem(TRIES_STORAGE_currentMap) ?? '{}')[state.id] ?? [0]; //findthestate
+          // console.log('3', triesForCurrentState);
 
-      let averageTries = triesForCurrentState.reduce((a, b) => a + b) / triesForCurrentState.length;
+          // console.log('4  ', triesForCurrentState);
+          let averageTries = triesForCurrentState.reduce((a, b) => a + b) / triesForCurrentState.length; //findthestate
 
-      let appliedStateColor;
-      if (averageTries < 1) appliedStateColor = stateColor;
-      else if (averageTries == 1) appliedStateColor = stateColor_t1;
-      else if (averageTries <= 2) appliedStateColor = stateColor_t2;
-      else if (averageTries <= 3) appliedStateColor = stateColor_t3;
-      else if (averageTries > 3) appliedStateColor = stateColor_t4;
+          let appliedStateColor; //findthestate
+          if (averageTries < 1) appliedStateColor = stateColor; //findthestate
+          else if (averageTries == 1) appliedStateColor = stateColor_t1; //findthestate
+          else if (averageTries <= 2) appliedStateColor = stateColor_t2; //findthestate
+          else if (averageTries <= 3) appliedStateColor = stateColor_t3; //findthestate
+          if (averageTries > 3) appliedStateColor = stateColor_t4; //findthestate
 
-      stateHTML.setAttribute('fill', appliedStateColor);
+          stateHTML.setAttribute('fill', appliedStateColor); //findthestate
 
       // stateHTML.addEventListener("mouseover", function () {
       //   this.setAttribute("fill", stateColor_selected);
@@ -90,7 +120,14 @@ stateMap.onload = function () {
           foundCorrectState(this, promptState);
         }
       });
-    });
+
+          break;
+        case GameMode.FROM_A_TO_B:
+          console.log('gm a to b');
+          // for now do nothing
+          break;
+      }
+    }); //findthestate
 
     country.states.forEach((state) => {
       state.populateNeighbors(country);
@@ -141,6 +178,10 @@ function foundCorrectState(stateHTML, state) {
 
 function allStatesFound() {
   stateNamePrompt.innerText = 'all states found';
+  reloadPage();
+}
+
+function reloadPage() {
   window.location.reload();
 }
 
@@ -163,4 +204,11 @@ function selectMap(kind) {
   currentMapUrl = `../res/${kind}.svg`;
   stateMap.setAttribute('data', currentMapUrl);
   sessionStorage.setItem('currentMapUrl', currentMapUrl);
+}
+
+function loadGameMode(kind) {
+  // currentGameMode = kind;
+  console.log(kind);
+  sessionStorage.setItem('currentGameMode', kind);
+  reloadPage();
 }
