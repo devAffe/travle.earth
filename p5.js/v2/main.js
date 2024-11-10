@@ -35,8 +35,7 @@ let country = new Country();
 let state;
 let possibleStartStates = [];
 let possibleGoalStates = [];
-let startState;
-let goalState;
+
 let promptState;
 
 let triesTillFoundCorrectState = {};
@@ -58,7 +57,7 @@ body.onload = function () {
       console.log('switch a to b');
       console.log(guessInput);
       guessInput.style.display = 'block';
-
+      gm_fromAToB();
       break;
   }
 };
@@ -84,4 +83,26 @@ function loadGameMode(kind) {
   console.log(kind);
   sessionStorage.setItem('currentGameMode', kind);
   reloadPage();
+}
+
+function getRandomStateFrom(states) {
+  return states[rng(states.length)];
+}
+
+function cutOutRandomStateFrom(states) {
+  return states.splice(rng(states.length), 1)[0];
+}
+
+function removeStateFromList(state, states) {
+  // console.log('state id', state.id);
+  // console.log('states', states);
+  // console.log('len', states.length);
+  for (let i = 0; i < states.length; i++) {
+    // console.log('i' + i, states[i]);
+    if (states[i].id == state.id) {
+      // console.log('states id', states[i].id);
+      states.splice(i, 1);
+    }
+  }
+  return states;
 }

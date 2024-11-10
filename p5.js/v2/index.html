@@ -16,6 +16,7 @@
 <body id="body">
   <script async src="main.js"></script>
   <script async src="gm_findTheState.js"></script>
+  <script async src="gm_fromAToB.js"></script>
   
   <button onclick="resetScore()">Reset All Scores</button>
 
@@ -43,7 +44,10 @@
       Statename
     </div>
   
-    <input id="guess-input-field" class="text-field" placeholder="Enter Guess"></input>
+    <form onsubmit="handleSubmitGuess(event)">
+      <input id="guess-input-field" type="text" class="text-field" placeholder="Enter Guess"></input>
+      <button type="submit" style="display: none;"></button>
+    </form>
   </div>
 
 

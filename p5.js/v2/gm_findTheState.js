@@ -4,50 +4,58 @@ function gm_findTheState() {
     if (svgDocument) {
       statesSVG = svgDocument.querySelectorAll('.sm_state');
       currentMapId = svgDocument.firstElementChild.id;
-      TRIES_STORAGE_currentMap = `${TRIES_STORAGE}_${currentMapId}`;
+      TRIES_STORAGE_currentMap = `${TRIES_STORAGE}_${currentMapId}`; //findthestate
 
       country.states = [];
 
       statesSVG.forEach((stateHTML) => {
         state = new State(stateHTML);
 
+        // console.log(state); //---------------------------------------------------
+
         //CREATING LIST OF ALL STATES
         country.addState(state);
 
         //SETUP EACH STATE
         let triesForCurrentState;
+        // console.log('1', triesForCurrentState);
 
-        switch (currentGameMode) {
-          case GameMode.FIND_THE_STATE:
-            console.log('gm find the state');
-            triesForCurrentState = JSON.parse(sessionStorage.getItem(TRIES_STORAGE_currentMap) ?? '{}')[state.id] ?? [0];
+        console.log('gm find the state');
+        // console.log('2', triesForCurrentState);
+        triesForCurrentState = JSON.parse(sessionStorage.getItem(TRIES_STORAGE_currentMap) ?? '{}')[state.id] ?? [0]; //findthestate
+        // console.log('3', triesForCurrentState);
 
-            let averageTries = triesForCurrentState.reduce((a, b) => a + b) / triesForCurrentState.length;
+        // console.log('4  ', triesForCurrentState);
+        let averageTries = triesForCurrentState.reduce((a, b) => a + b) / triesForCurrentState.length; //findthestate
 
-            let appliedStateColor;
-            if (averageTries < 1) appliedStateColor = stateColor;
-            else if (averageTries == 1) appliedStateColor = stateColor_t1;
-            else if (averageTries <= 2) appliedStateColor = stateColor_t2;
-            else if (averageTries <= 3) appliedStateColor = stateColor_t3;
-            if (averageTries > 3) appliedStateColor = stateColor_t4;
+        let appliedStateColor; //findthestate
+        if (averageTries < 1) appliedStateColor = stateColor; //findthestate
+        else if (averageTries == 1) appliedStateColor = stateColor_t1; //findthestate
+        else if (averageTries <= 2) appliedStateColor = stateColor_t2; //findthestate
+        else if (averageTries <= 3) appliedStateColor = stateColor_t3; //findthestate
+        if (averageTries > 3) appliedStateColor = stateColor_t4; //findthestate
 
-            stateHTML.setAttribute('fill', appliedStateColor);
+        stateHTML.setAttribute('fill', appliedStateColor); //findthestate
 
-            stateHTML.addEventListener('click', function () {
-              tryCounter++;
+        // stateHTML.addEventListener("mouseover", function () {
+        //   this.setAttribute("fill", stateColor_selected);
+        //   stateNameWhileHovering.innerText = this.attributes.name.value;
+        //   stateNameWhileHovering.style.display = "block";
+        // });
 
-              if (this.id == promptState.id) {
-                foundCorrectState(this, promptState);
-              }
-            });
+        // stateHTML.addEventListener("mouseleave", function () {
+        //   this.setAttribute("fill", stateColor);
+        //   stateNameWhileHovering.style.display = "none";
+        // });
 
-            break;
-          case GameMode.FROM_A_TO_B:
-            console.log('gm a to b');
-            // for now do nothing
-            break;
-        }
-      });
+        stateHTML.addEventListener('click', function () {
+          tryCounter++;
+
+          if (this.id == promptState.id) {
+            foundCorrectState(this, promptState);
+          }
+        });
+      }); //findthestate
 
       country.states.forEach((state) => {
         state.populateNeighbors(country);
@@ -107,7 +115,4 @@ function setNewPromptState() {
   stateNamePrompt.innerText = promptState.name;
 
   tryCounter = 0;
-}
-function getRandomStateFrom(states) {
-  return states[rng(states.length)];
 }

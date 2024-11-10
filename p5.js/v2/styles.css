@@ -8,6 +8,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  & #state-name-prompt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   
   & #map-view {
     width: 80vw;
